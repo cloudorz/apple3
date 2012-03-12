@@ -41,15 +41,8 @@ class User(Basic):
 
     tpl = {'_id':1, 'name': 1, 'avatar': 1, 'brief': 1, 'role': 1, 'prizes': 1}
 
-    userkey = db.StringField(max_length=30)
-    name = db.StringField(max_length=20)
-    avatar = db.StringField(max_length=100)
-    phone = db.StringField(max_length=15, default="")
-    deviceid = db.StringField(max_length=50, default="")
-    brief = db.StringField(max_length=120, default="")
-    location = db.TupleField(db.FloatField(), db.FloatField())
-    role = db.EnumField(db.IntField(), BLOCK, NORMAL, ADMIN, SA, default=NORMAL)
-    prizes = db.SetField(db.ObjectIdField())
+    def __init__(self, data, *args, **kwargs):
+        pass
 
     def can_save(self):
         pass

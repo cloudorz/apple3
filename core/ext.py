@@ -1,7 +1,7 @@
 # coding: utf-8
 
-from tornadomongoalchemy.mongoalchemy import MongoAlchemy
+from pymongo import Connection, ASCENDING, DESCENDING
 
-__all__ = ['db']
+__all__ = ['db', 'ASCENDING', 'DESCENDING']
 
-db = MongoAlchemy()
+db = Connection('localhost', 27017)['apple3']

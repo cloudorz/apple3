@@ -2,32 +2,44 @@
 
 import datetime, re, operator, uuid
 
-from tornadomongoalchemy.mongoalchemy import BaseQuery
-
 from core.ext import db
+from utils.escape import json_encode, json_decode
 
 
 now = datetime.datetime.utcnow
 
 
-class UserQuery(BaseQuery):
-
-    def get_by_userkey(self, uk):
-        user = self.filter(User.userkey==uk, User.status!=User.BLOCK).first()
-        return user
+class Basic(object):
+    pass
 
 
-class Device(db.Document):
+class Device(Basic):
 
     deviceid = db.StringField(max_length=50)
     dtoken = db.StringField(80)
 
 
-class User(db.Document):
+class User(Basic):
 
-    query_class = UserQuery
+    attrs = {
+            'userkey': True,
+            'secret': True,
+            'name': True,
+            'role': True,
+            'school': True,
+            'deviceid': False,
+            'avatar': False,
+            'phone': False,
+            'brief': False,
+            'location': False,
+            'prizes': False,
+            'updated': True,
+            'created': True,
+            }
 
-    BLOCK, NORMAL, ADMIN, SA = 0, 100, 200, 300
+    rights = ('normal', 'admin', 'sa', 'block')
+
+    tpl = {'_id':1, 'name': 1, 'avatar': 1, 'brief': 1, 'role': 1, 'prizes': 1}
 
     userkey = db.StringField(max_length=30)
     name = db.StringField(max_length=20)
@@ -39,13 +51,23 @@ class User(db.Document):
     role = db.EnumField(db.IntField(), BLOCK, NORMAL, ADMIN, SA, default=NORMAL)
     prizes = db.SetField(db.ObjectIdField())
 
-    @db.computed_field(db.StringField(max_length=32))
-    def secret(self):
+    def can_save(self):
+        pass
+
+    def _secret(self):
         return uuid.uuid4().get_hex()
 
-    @db.computed_field(db.DateTimeField())
-    def updated(self):
-        return now()
+    def get(self):
+        pass
+
+    def put(self):
+        pass
+
+    def post(self):
+        pass
+
+    def delete(self):
+        pass
 
 
 class Auth(db.Document):

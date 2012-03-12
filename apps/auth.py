@@ -9,8 +9,7 @@ from tornado import httpclient
 
 from apps import BaseRequestHandler, DoubanMixin, WeiboMixin, RenrenMixin
 from apps.models import User, Auth
-from utils.decorator import authenticated, validclient, admin
-from utils.escape import json_encode, json_decode
+from utils.decorator import authenticated, admin
 from utils.tools import QDict
 
 

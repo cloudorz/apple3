@@ -1,7 +1,7 @@
 # coding: utf-8
 
-from pymongo import Connection, ASCENDING, DESCENDING
+from tornadoext.mongoalchemy import MongoAlchemy, BaseQuery
 
-__all__ = ['db', 'ASCENDING', 'DESCENDING']
+__all__ = ['db', 'BaseQuery']
 
-db = Connection('localhost', 27017)['apple3']
+db = MongoAlchemy()

@@ -12,8 +12,15 @@ class QDict(dict):
         except KeyError:
             raise AttributeError(name)
 
-# singleton decorator
+class HashIdDict(dict):
+    def __hash__(self):
+        try:
+            hashnum = hash(self['id'])
+        except KeyError:
+            hashnum = hash(None)
+        return hashnum
 
+# singleton decorator
 def singleton(aClass):
     instance = []
 

@@ -1,17 +1,23 @@
 # coding: utf-8
 
-import json, datetime
+import json, datetime, re
+from bson.objectid import ObjectId
 from tornado.escape import recursive_unicode, to_basestring
 
-class JSONDateTimeEncoder(json.JSONEncoder):
+
+is_objecid = re.compile(r'^<ObjectId:([a-e0-9]{24})>$')
+
+class JSONDateTimeObjectIDEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (datetime.date, datetime.datetime)):
             return obj.isoformat()
+        elif isinstance(obj, ObjectId):
+            return "<ObjectId:%s>" % str(obj)
         else:
             #return json.JSONEncoder.default(self, obj)
-            return super(JSONDateTimeEncoder, self).default(obj)
+            return super(JSONDateObjectTimeEncoder, self).default(obj)
 
-def datetime_decoder(d):
+def datetime_objectid_decoder(d):
     if isinstance(d, list):
         pairs = enumerate(d)
     elif isinstance(d, dict):
@@ -29,9 +35,13 @@ def datetime_decoder(d):
                 try:
                     v = datetime.datetime.strptime(v, '%Y-%m-%d').date()
                 except ValueError:
-                    pass
+                    # ObjectId check TODO test
+                    re_obj = is_objecid.match(v)
+                    if re_obj:
+                        v = re_obj.groups()[0]
+
         elif isinstance(v, (dict, list)):
-            v = datetime_decoder(v)
+            v = datetime_objectid_decoder(v)
         result.append((k, v))
     if isinstance(d, list):
         return [x[1] for x in result]
@@ -39,10 +49,12 @@ def datetime_decoder(d):
         return dict(result)
 
 def json_encode(value):
-    return json.dumps(recursive_unicode(value), cls=JSONDateTimeEncoder).replace("</", "<\\/")
+    return json.dumps(recursive_unicode(value),
+            cls=JSONDateTimeObjectIDEncoder).replace("</", "<\\/")
 
 def json_decode(value):
-    return json.loads(to_basestring(value), object_hook=datetime_decoder)
+    return json.loads(to_basestring(value),
+            object_hook=datetime_objectid_decoder)
 
 
 if __name__ == '__main__':

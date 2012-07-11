@@ -25,11 +25,11 @@ define('port', default=8000, help="run on the given port", type=int)
 #URI
 #define('site_uri', default="http://i.n2u.in", type=str, help="site uri") 
 #define('static_uri', default="http://s.n2u.in", type=str, help="static uri")
-define('site_uri', default="http://192.168.0.102", type=str, help="site uri") 
-define('static_uri', default="http://192.168.0.102", type=str, help="static uri")
+define('site_uri', default="http://i2.n2u.in", type=str, help="site uri") 
+define('static_uri', default="http://s.n2u.in", type=str, help="static uri")
 
 # avatar dir  path
-define('path', default="/data/web/static/", type=str, help="recommend default one")
+define('path', default="/data/web/help_static/", type=str, help="recommend default one")
 
 
 # main logic

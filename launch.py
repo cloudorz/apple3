@@ -52,8 +52,8 @@ class Application(tornado.web.Application):
                 # secure cookies
                 cookie_secret="5b05a25df33a4609ca4c14caa6a8594b",
                 # OAuth's key and secret
-                weibo_app_key="563114544",
-                weibo_app_secret="ac88e78e4c5037839cbbb9c92369bdef",
+                weibo_app_key="1039549888",
+                weibo_app_secret="0fc39b72d565afb13a0bd04e75a7c873",
                 # le bang key value
                 nausicaa="3afb9fb7f605476d92b9ee7000b41ba0",
                 # mongodb config
